@@ -1,0 +1,24 @@
+# Maven
+target/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Drivers
+chromedriver.exe
+msedgedriver.exe
+
+# Compiled files
+*.class
