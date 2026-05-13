@@ -58,32 +58,32 @@ public class UserRepository {
             new ArrayList<>();
 
         String sql =
-            "SELECT id, user_name " +
+            "SELECT id, user_name, data_structure_rate, algo_rate, using_AI_rate " +
             "FROM users";
 
         try (
             Connection conn =
                 DbConnection.getConnection();
 
-            PreparedStatement ps =
-                conn.prepareStatement(sql);
-
-            ResultSet rs =
-                ps.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+//        		System.out.println("BEFORE EXECUTING");
+            ResultSet rs = ps.executeQuery();
+//        		System.out.println("AFTER EXECUTING");
         ) {
 
             while (rs.next()) {
-
-                int id =
-                    rs.getInt("id");
-
-                String userName =
-                    rs.getString("user_name");
-
+                int id = rs.getInt("id");
+                String userName = rs.getString("user_name");
+                double data_structure_rate = rs.getDouble("data_structure_rate");
+                double algoRate = rs.getDouble("algo_rate");
+                double usingAIRate = rs.getDouble("using_AI_rate");
                 User user =
                     new User(
                         id,
-                        userName
+                        userName,
+                        data_structure_rate,
+                        algoRate,
+                        usingAIRate
                     );
 
                 users.add(user);
