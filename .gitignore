@@ -16,6 +16,9 @@ Thumbs.db
 # Environment variables
 .env
 
+#profile-dir
+edge-profile/
+
 # Drivers
 chromedriver.exe
 msedgedriver.exe

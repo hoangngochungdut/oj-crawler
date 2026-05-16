@@ -5,6 +5,7 @@ public class Submission {
     private int userId;
     private int contestId;
     private long submissionId;
+    private String sourceCode;
     
     private double dataStructureRate;
     private String dataStructureAnalyse;
@@ -16,11 +17,13 @@ public class Submission {
         int userId,
         int contestId,
         long submissionId,
+        String src,
         AnalysisResult result
     ) {
         this.userId = userId;
         this.contestId = contestId;
         this.submissionId = submissionId;
+        this.sourceCode = src;
         this.dataStructureRate = result.getData_structure_rate();
         this.dataStructureAnalyse = result.getData_structure_analyse();
         this.algoRate = result.getAlgorithm_rate();
@@ -34,6 +37,7 @@ public class Submission {
             int userId,
             int contestId,
             long submissionId,
+            String src,
             double dataStructureRate,
             String dataStructureAnalyse,
             double algoRate,
@@ -44,6 +48,7 @@ public class Submission {
         this.userId = userId;
         this.contestId = contestId;
         this.submissionId = submissionId;
+        this.sourceCode = src;
 
         this.dataStructureRate = dataStructureRate;
         this.dataStructureAnalyse = dataStructureAnalyse;
@@ -65,6 +70,10 @@ public class Submission {
 
     public long getSubmissionId() {
         return submissionId;
+    }
+    
+    public String getSourceCode() {
+    	return sourceCode;
     }
     
     public double getDataStructureRate() {
@@ -101,6 +110,10 @@ public class Submission {
 
     public void setSubmissionId(long submissionId) {
         this.submissionId = submissionId;
+    }
+    
+    public void setSourceCode(String src) {
+    	this.sourceCode = src;
     }
     
     public void setDataStructureRate(double dataStructureRate) {

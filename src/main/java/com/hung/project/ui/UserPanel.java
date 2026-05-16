@@ -238,7 +238,7 @@ public class UserPanel extends JPanel {
                     String srcCode = crawler.crawlSourceCode(s.getContestId(), s.getSubmissionId());
                     if (srcCode != null) {
                         AnalysisResult res = analyzer.analyzeCode(srcCode);
-                        submissionRepository.add(new Submission(s.getUserId(), s.getContestId(), s.getSubmissionId(), res));
+                        submissionRepository.add(new Submission(s.getUserId(), s.getContestId(), s.getSubmissionId(), srcCode, res));
                         Thread.sleep(1000);
                     }
                 }

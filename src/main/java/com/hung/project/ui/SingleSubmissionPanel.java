@@ -1,8 +1,8 @@
 package com.hung.project.ui;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import com.hung.project.models.*;
 
@@ -15,7 +15,7 @@ public class SingleSubmissionPanel extends JPanel {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(Color.WHITE);
-        content.setBorder(new EmptyBorder(10, 20, 10, 20)); // Padding cho toàn bộ nội dung
+        content.setBorder(new EmptyBorder(20, 20, 20, 20)); // Padding cho toàn bộ nội dung
 
         // --- Hệ thống Font Chữ Modern ---
         Font contestFont = new Font("Arial", Font.BOLD, 22); // Cỡ chữ lớn hơn cho ID
@@ -39,30 +39,8 @@ public class SingleSubmissionPanel extends JPanel {
         idsContainer.add(Box.createVerticalStrut(5));
         idsContainer.add(createLabel("Submission ID: " + s.getSubmissionId(), textFont, Color.GRAY));
 
-//        // Nút Edit và Share
-//        JPanel buttonsPanel = new JPanel();
-//        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-//        buttonsPanel.setBackground(Color.WHITE);
-//        buttonsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//
-//        JButton editButton = new JButton("Edit");
-//        JButton shareButton = new JButton("Share");
-        
-//        // Style cho nút (để hiện đại hơn)
-//        editButton.setFont(textFont);
-//        shareButton.setFont(textFont);
-//        editButton.setBackground(new Color(240, 240, 240));
-//        shareButton.setBackground(new Color(240, 240, 240));
-//        editButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-//        shareButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-//
-//        buttonsPanel.add(editButton);
-//        buttonsPanel.add(Box.createHorizontalStrut(10)); // Khoảng cách giữa các nút
-//        buttonsPanel.add(shareButton);
-
         idPanel.add(idsContainer);
         idPanel.add(Box.createHorizontalGlue()); // Đẩy các nút về phía bên phải
-//        idPanel.add(buttonsPanel);
         
         content.add(idPanel);
 
@@ -80,13 +58,20 @@ public class SingleSubmissionPanel extends JPanel {
 
         content.add(createAnalysisCard("AI Assistance", s.getUsingAIRate(), s.getUsingAIAnalyse(), 
                 sectionHeaderFont, textFont, cardBackgroundColor, borderColor));
+        content.add(Box.createVerticalStrut(25)); // Khoảng cách tới vùng chứa Code
+
+        // --- 3. Vùng chứa Source Code Mới ---
+        content.add(createLabel("Source Code", sectionHeaderFont, Color.BLACK));
+        content.add(Box.createVerticalStrut(10));
+        content.add(createSourceCodeCard(s.getSourceCode())); // Giả định class Submission có phương thức getSourceCode()
 
         // Thêm Glue ở cuối để các phần tử không bị giãn quá mức
         content.add(Box.createVerticalGlue());
 
-        JScrollPane scrollPane = new JScrollPane(content);
-        scrollPane.setBorder(null); // Bỏ viền của JScrollPane để trông mượt mà hơn
-        add(scrollPane, BorderLayout.CENTER);
+        JScrollPane mainScrollPane = new JScrollPane(content);
+        mainScrollPane.setBorder(null); // Bỏ viền của JScrollPane chính để trông mượt mà hơn
+        mainScrollPane.getVerticalScrollBar().setUnitIncrement(16); // Cuộn mượt hơn
+        add(mainScrollPane, BorderLayout.CENTER);
     }
 
     // --- Phương thức hỗ trợ: Tạo Label với Màu và Căn Chỉnh ---
@@ -98,7 +83,7 @@ public class SingleSubmissionPanel extends JPanel {
         return label;
     }
 
-    // --- Phương thức hỗ trợ: Tạo TextArea Modern ---
+    // --- Phương thức hỗ trợ: Tạo TextArea Modern cho phần text nhận xét ---
     private JTextArea createTextArea(String text, Font font) {
         JTextArea area = new JTextArea(text);
         area.setFont(font);
@@ -112,7 +97,7 @@ public class SingleSubmissionPanel extends JPanel {
         return area;
     }
 
-    // --- Phương thức quan trọng nhất: Tạo Card Phân Tích ---
+    // --- Phương thức: Tạo Card Phân Tích ---
     private JPanel createAnalysisCard(String title, double rating, String text, 
                                         Font headerFont, Font textFont, 
                                         Color bgColor, Color borderColor) {
@@ -121,7 +106,7 @@ public class SingleSubmissionPanel extends JPanel {
         card.setBackground(bgColor);
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Tạo viền card: Bo góc mỏng và màu nhẹ (khớp với ảnh)
+        // Tạo viền card: Bo góc mỏng và màu nhẹ
         Border compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(borderColor, 1, true), // Viền mỏng, bo góc
                 new EmptyBorder(15, 15, 15, 15) // Padding bên trong card
@@ -138,31 +123,25 @@ public class SingleSubmissionPanel extends JPanel {
         titleLabel.setFont(headerFont);
         titleLabel.setForeground(Color.BLACK);
 
-//        JLabel ratingLabel = new JLabel(generateRatingStars(rating));
-//        ratingLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-//        ratingLabel.setForeground(new Color(255, 193, 7)); // Màu vàng cho sao
-
         JLabel scoreLabel = new JLabel(" " + rating);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
         scoreLabel.setForeground(Color.DARK_GRAY);
 
         headerPanel.add(titleLabel);
         headerPanel.add(Box.createHorizontalStrut(10)); // Khoảng cách
-//        headerPanel.add(ratingLabel);
         headerPanel.add(scoreLabel);
         headerPanel.add(Box.createHorizontalGlue()); // Đẩy mọi thứ về bên trái
 
         card.add(headerPanel);
         card.add(Box.createVerticalStrut(15)); // Margin giữa header và text
 
-        // Text Area Panel (để chứa JTextArea và scroll nếu cần)
+        // Text Area Panel
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new BorderLayout());
         textPanel.setBackground(bgColor);
         textPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Giới hạn chiều rộng của card để đảm bảo layout hợp lý (Y-AXIS trong main content panel)
-        card.setMaximumSize(new Dimension(800, 300)); // Ví dụ: Giới hạn chiều rộng và chiều cao tối đa
+        card.setMaximumSize(new Dimension(800, 300));
 
         JTextArea textArea = createTextArea(text, textFont);
         textPanel.add(textArea, BorderLayout.CENTER);
@@ -172,16 +151,28 @@ public class SingleSubmissionPanel extends JPanel {
         return card;
     }
 
-//    // --- Phương thức hỗ trợ: Tạo chuỗi ký tự Sao Rating ---
-//    private String generateRatingStars(int rating) {
-//        StringBuilder stars = new StringBuilder();
-//        for (int i = 0; i < 5; i++) {
-//            if (i < rating) {
-//                stars.append("*"); // Sao đầy
-//            } else {
-//                stars.append(""); // Sao rỗng
-//            }
-//        }
-//        return stars.toString();
-//    }
+    // --- Phương thức MỚI: Tạo vùng hiển thị Source Code chuyên nghiệp ---
+    private JComponent createSourceCodeCard(String sourceCode) {
+        JTextArea codeArea = new JTextArea(sourceCode != null ? sourceCode : "// No source code available");
+        
+        // Sử dụng font chữ Monospaced chuyên dụng cho Code
+        codeArea.setFont(new Font("Consolas", Font.PLAIN, 15)); 
+        codeArea.setForeground(new Color(212, 212, 212)); // Chữ màu xám trắng nhẹ phong cách Dark Mode
+        codeArea.setBackground(new Color(30, 30, 30));    // Màu nền tối kiểu VS Code (Dark Theme)
+        
+        codeArea.setEditable(false);
+        codeArea.setTabSize(4); // Định dạng khoảng cách Tab chuẩn thụt lề code
+        codeArea.setMargin(new Insets(15, 15, 15, 15)); // Khoảng đệm cho text bên trong editor
+
+        // Đặt TextArea vào cấu trúc ScrollPane riêng biệt để cuộn độc lập khi code quá dài
+        JScrollPane codeScrollPane = new JScrollPane(codeArea);
+        codeScrollPane.setBorder(BorderFactory.createLineBorder(new Color(60, 60, 60), 1, true)); // Viền tối bo góc nhẹ
+        codeScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        // Cố định kích thước khung chứa Code (Rộng 800px giống các card trên, cao 350px để cuộn nội dung)
+        codeScrollPane.setMaximumSize(new Dimension(800, 350));
+        codeScrollPane.setPreferredSize(new Dimension(800, 350));
+
+        return codeScrollPane;
+    }
 }

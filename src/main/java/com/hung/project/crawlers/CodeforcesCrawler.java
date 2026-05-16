@@ -13,6 +13,9 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.*;
 
 import com.hung.project.models.Submission;
+//import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;?
+import java.io.File;
+		
 import com.hung.project.API.*;
 public class CodeforcesCrawler {
 
@@ -21,23 +24,26 @@ public class CodeforcesCrawler {
 
     public CodeforcesCrawler() {
 
-    	System.setProperty(
-    		    "webdriver.edge.driver",
-    		    "edgedriver_win64/msedgedriver.exe"
-    		);
+        System.setProperty(
+            "webdriver.edge.driver",
+            "edgedriver_win64/msedgedriver.exe"
+        );
 
-    		EdgeOptions options =
-    		    new EdgeOptions();
+        EdgeOptions options = new EdgeOptions();
 
-    		options.addArguments(
-    		    "--user-data-dir=C:\\edge-profile"
-    		);
+        // 1. Lấy đường dẫn tuyệt đối đến thư mục 'edge-profile' ngay trong dự án
+        // File("edge-profile") sẽ trỏ vào thư mục gốc của project của bạn
+        File profileDir = new File("edge-profile");
+        String profilePath = profileDir.getAbsolutePath();
 
-    		options.addArguments(
-    		    "--disable-blink-features=AutomationControlled"
-    		);
+        // 2. Truyền đường dẫn động này vào EdgeOptions
+        options.addArguments("--user-data-dir=" + profilePath);
 
-    		driver = new EdgeDriver(options);
+        options.addArguments(
+            "--disable-blink-features=AutomationControlled"
+        );
+
+        driver = new EdgeDriver(options);
     }
     
     public void enter() {
